@@ -52,8 +52,13 @@ pour afficher les informations réseau d'une carte réseau via l'interface graph
 * Modifier les parametre de la carte
 * Une nouvelle fenetre s'ouvre avec la liste des cartes réseaux du pc
 
-pour accéder aux infos d'une carte réseaux il faut faire un clic droit dessus et choisir Statut et dans cet nouvelle fenetre on à un onglet détails qui nous montrera la config réseau de la carte 
-![img](https://github.com/StevenDias33/LaboR-seau/blob/master/TP%201/Tp-1.png)
+pour accéder aux infos d'une carte réseaux il faut faire un clic droit dessus et choisir Statut et dans cet nouvelle fenetre on à un onglet détails qui nous montrera la config réseau de la carte :
+
+![img](https://github.com/Saluc00/-Ynov-Cours-R-seau---TP-1/blob/master/ressources/Capture2.PNG)
+
+Ou bien :
+
+![img](https://github.com/Saluc00/-Ynov-Cours-R-seau---TP-1/blob/master/ressources/Capture3.PNG)
 
 l'adresse ip MAC et la gateway sont la meme que dans l'exercie en invite de commande ce qui est logique 
 
@@ -137,7 +142,7 @@ L'un doit etre le serveur et rentrer cela :
 
 `nc.exe -l -p 1048`
 
-![img]
+![img](https://github.com/Saluc00/-Ynov-Cours-R-seau---TP-1/blob/master/ressources/netcat.png)
 
 *Ce pc créer un serveur de messagerie avec le port 1048*
 
@@ -145,7 +150,7 @@ L'autre doit etre le client et rentrer cela :
 
 `nc.exe 192.168.0.1 1048`
 
-![img]
+![img](https://github.com/Saluc00/-Ynov-Cours-R-seau---TP-1/blob/master/ressources/netcat%20client.png)
 
 *Ce pc se connecte au serveur de messagerie avec le port 1048*
 
