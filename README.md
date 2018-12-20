@@ -12,7 +12,7 @@ TP 2 - Exploration du réseau d'un point de vue client
     * [Utilisation d’un des deux comme gateway](#utilisation-dun-des-deux-comme-gateway)
     * [Netcat](#netcat)
     * [Wireshark](#wireshark)
-* [III. Manipulations d'autres outils/protocoles côté client](#iii-manipulations-dautres-outilsprotocoles-cote-client)
+* [III. Manipulations d'autres outils/protocoles côté client](#iii-manipulations-dautres-outilsprotocoles-côté-client)
     * [DHCP](#dhcp)
     * [DNS](#dns)
         * [Nslookup](#nslookup)
@@ -42,7 +42,7 @@ Pour afficher la configuration et l'adressage de nos cartes réseaux on utilise 
     Serveur DHCP 10.33.3.254
     Gateway : 10.33.3.253
 
-**Affichage Gateway**
+## Affichage Gateway
 
 Pour connaitre la gateway il suffit de faire un ipconfig /all 
 
