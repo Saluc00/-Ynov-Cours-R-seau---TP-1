@@ -159,9 +159,95 @@ L'autre doit etre le client et rentrer cela :
 J'ai ensuite effectuer une capture de la tram lors de la comunication netcat.
 
 Pour cela :
-* Ouvrir Wireshark
-* Rechercher uniquement les trames `TCP`
+* Ouvrir Wireshark.
+* Rechercher uniquement les trames `TCP`.
 
 On obtient ceci :
 
-![img]
+![img](https://github.com/Saluc00/-Ynov-Cours-R-seau---TP-1/blob/master/ressources/netcat-tram.png)
+
+III. Manipulations d'autres outils/protocoles côté client
+=========
+
+ ## DHCP
+ 
+ Pour afficher le serveur `DHCP` faire :
+
+* Ouvrir un CLI
+* `ipconfig /all`
+
+Resultat :
+```
+Serveur DHCP: 10.33.3.254
+```
+
+La date de bail se trouve aussi dans le `ipconfig /all`, soit : 
+```
+Bail obtenu: jeudi 20 décembre 2018 13:56:59
+Bail expiran: jeudi 20 décembre 2018 16:57:49
+```
+
+***PETITE DESCRIPTION DU FAMEUX `DHCP`***
+
+Le `DHCP` soit *le protocole de configuration dynamique des hôtes* attribue 'automatiquement' les adresse IP aux machines qui se connecte au réseau.
+Ce qui permet de ne pas à avoir a parametrer soit même l'adresse, le masque, la gateway, etc..
+
+Pour changer d'adresse ip en CLI on fait les étapes suivantes : 
+* Ouvrir un CLI
+* ipconfig /release (***Cette opération supprime notre configuration d'adresse IP***)
+* ipconfig /renew (***Cette opération demande au serveur DHCP de nous redonner une configuration d'adresse ip***)
+
+## DNS
+
+En faisant un `ipconfig /all` on peut voir que l'adresse ip du serveur DNS que mon pc connait est : 
+```
+Serveurs DNS: 10.33.10.20
+```
+### Nslookup
+
+Enfaisant un `nslookup` dans un CLI j'obtient cela pour `google.com` et `Ynov.com` : 
+```
+C:\Users\Saluc>nslookup
+Serveur par dÚfaut :   UnKnown
+Address:  10.33.10.20
+
+> google.com
+Serveur :   UnKnown
+Address:  10.33.10.20
+
+Réponse ne faisant pas autorité :
+Nom :    google.com
+Addresses:  2a00:1450:4007:817::200e
+          216.58.206.238
+
+> ynov.com
+Serveur :   UnKnown
+Address:  10.33.10.20
+
+Réponse ne faisant pas autorité :
+Nom :    ynov.com
+Address:  217.70.184.38
+```
+
+On peut voir que le serveur `DNS` de google est `216.58.206.238` et que le serveur `DNS` d'Ynov est `217.70.184.38`. 
+
+### Reverse Lookup
+
+on entre dans le CLI `nslookup 216.58.206.238` pour lui demander quelle est le nom de cette adresse ip.
+
+Avec un `reverse lookup` on obtient cela pour `google.com` : 
+```
+Nom :    par10s34-in-f14.1e100.net
+Address:  216.58.206.238
+```
+
+Pour l'ip `78.78.21.21` on obtient : 
+```
+Nom :    host-78-78-21-21.mobileonline.telia.com
+Address:  78.78.21.21
+```
+et avec cette adresse `96.16.54.88` : 
+```
+Nom :    host-92-16-54-88.as13285.net
+Address:  92.16.54.88
+```
