@@ -12,6 +12,11 @@ TP 2 - Exploration du réseau d'un point de vue client
     * Utilisation d’un des deux comme gateway
     * Netcat
     * Wireshark
+* III. Manipulations d'autres outils/protocoles côté client
+    * DHCP
+    * DNS
+        * Nslookup
+        * Reverse lookup
 
 I. Exploration locale en solo
 ==========
