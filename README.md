@@ -3,16 +3,16 @@ TP 2 - Exploration du réseau d'un point de vue client
 
 # Sommaire
 
-* [I. Exploration locale en solo](#i.-exploration-locale-en-solo)
-    * [Affichage d’informations sur la pile TCP/IP locale](#tcp/ip)
-        * [Affichage Gateway](#gateway)
-    * [Affichage configuration réseau GUI](#gui)
+* [I. Exploration locale en solo](#i-exploration-locale-en-solo)
+    * [Affichage d’informations sur la pile TCP/IP locale](#affichage-dinformations-sur-la-pile-tcpip-locale)
+        * [Affichage Gateway](#affichage-gateway)
+    * [Affichage configuration réseau GUI](#affichage-configuration-réseau-gui)
     * [Nmap](#nmap)
-* [II. Exploration locale en duo](#duo)
-    * [Utilisation d’un des deux comme gateway](#deux)
+* [II. Exploration locale en duo](#ii-exploration-locale-en-duo)
+    * [Utilisation d’un des deux comme gateway](#utilisation-dun-des-deux-comme-gateway)
     * [Netcat](#netcat)
     * [Wireshark](#wireshark)
-* [III. Manipulations d'autres outils/protocoles côté client](#client)
+* [III. Manipulations d'autres outils/protocoles côté client](#iii-manipulations-dautres-outilsprotocoles-cote-client)
     * [DHCP](#dhcp)
     * [DNS](#dns)
         * [Nslookup](#nslookup)
