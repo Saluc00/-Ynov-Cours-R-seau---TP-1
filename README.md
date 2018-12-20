@@ -3,20 +3,20 @@ TP 2 - Exploration du réseau d'un point de vue client
 
 # Sommaire
 
-* I. Exploration locale en solo
-    * Affichage d’informations sur la pile TCP/IP locale
-        * Affichage Gateway
-    * Affichage configuration réseau GUI
-    * Nmap
-* II. Exploration locale en solo
-    * Utilisation d’un des deux comme gateway
-    * Netcat
-    * Wireshark
-* III. Manipulations d'autres outils/protocoles côté client
-    * DHCP
-    * DNS
-        * Nslookup
-        * Reverse lookup
+* [I. Exploration locale en solo](#i.-exploration-locale-en-solo)
+    * [Affichage d’informations sur la pile TCP/IP locale](#tcp/ip)
+        * [Affichage Gateway](#gateway)
+    * [Affichage configuration réseau GUI](#gui)
+    * [Nmap](#nmap)
+* [II. Exploration locale en duo](#duo)
+    * [Utilisation d’un des deux comme gateway](#deux)
+    * [Netcat](#netcat)
+    * [Wireshark](#wireshark)
+* [III. Manipulations d'autres outils/protocoles côté client](#client)
+    * [DHCP](#dhcp)
+    * [DNS](#dns)
+        * [Nslookup](#nslookup)
+        * [Reverse lookup](#reverse-lookup)
 
 I. Exploration locale en solo
 ==========
@@ -93,7 +93,7 @@ Je peut donc l'utiliser !
 
 Je modifie alors mon adresse ip en `10.33.3.20` car elle était disponible aprés étude du scan 
 
-II. Exploration locale en solo
+II. Exploration locale en duo
 ==========
 
 Pour la seconde parti du TP je me suis connecté en filaire au pc de mon voisin et j'ai changer mon adresse ip en `192.168.0.1`, lui en `192.168.0.2` Puis mis chacun un masque `255.255.255.0`. 
