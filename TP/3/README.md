@@ -4,11 +4,23 @@
 
 # Sommaire
 
+* [Matériel utilisé](#matériel-utilisé)
 * [Initiation](#initiation)
+
+# Matériel utilisé
+
+Pour se *TP* j'utilise une **machine virtuelle** 
+
+**Logiciel** : `VirtualBox`
+**OS** : `centOS 7 (minimal)`
 
 # Initiation
 
-Dans notre TP, j'utilise **un machine virtuel** (*VM*) avec un *OS* [centOS](https://fr.wikipedia.org/wiki/CentOS). La VM configuré, avant de tout commencer, il nous ai demandé de *désactiver* `SElinux`.
+Dans notre TP, j'utilise **une machine virtuelle** (*VM*) avec un *OS* [centOS](https://fr.wikipedia.org/wiki/CentOS).
+
+### Avant de commencer
+
+La *VM* configuré, il nous ai demandé de *désactiver* `SElinux`.
 
 Pour cela,  j'ai entré :
 * `sudo setenforce 0`
