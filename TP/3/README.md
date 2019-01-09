@@ -1,6 +1,6 @@
 # TP 3 - Plusieurs réseaux : routage statique
 
-Vous pourrez retrouver le sujet [ici](https://github.com/It4lik/B1-Reseau-2018/tree/master/tp/3) !
+*Vous pourrez retrouver le sujet* [ici](https://github.com/It4lik/B1-Reseau-2018/tree/master/tp/3) !
 
 # Sommaire
 
@@ -37,9 +37,9 @@ La dedans, j'ouvre **VIM** en faisant la commande `vi ifcfg-ens37`, puis inscrir
     NETMASK=255.255.255.0
     [it4@localhost network-scripts]$
 
-Petit **ifdown ens37** et **ifup ens37** pour redemarrer la carte réseau *(Pour etre sur que la config sois correctement mise)*
+Petit `ifdown ens37` et `ifup ens37` pour redemarrer la carte réseau *(Pour etre sur que la config sois correctement mise)*
 
-Avec **Ip a** je peut voir la config de toutes les carte réseau.
+Avec `ip a` je peut voir la config de toutes les carte réseau.
 
 Soit :
 
