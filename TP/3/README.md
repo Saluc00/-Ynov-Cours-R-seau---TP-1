@@ -64,14 +64,14 @@ Soit :
     
     2: ens33: <BROADCAST,MULTCAST,UP,LOWER_UP> mtu 1500 qdisc pfifo_fast state UP group default qlen 1000
     link/ether 00:0c:29:69:fa:df brd ff:ff:ff:ff:ff:ff
-    inet 192.168.234.131/24 brd 192.168.234.255 scope global noprefixroute dynamic ens33
+    inet 10.0.2.15/24 brd 10.0.2.255 scope global noprefixroute dynamic enp0s3
         valid_lft 1794sec preferred_lft 1794sec
     inet6 fe80:af9d:238a:2fba:3e43/64 scope link noprefixroute
         valid_lft forever preferred_lft forever
 
     3: ens37: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc pfifo_fast state UP group default qlen 1000
     link/ether 00:0c:29:69:fa:e9 brd ff:ff:ff:ff:ff:ff
-    inet 192.168.127.10/24 brd 192.168.127.255 scope global noprefixroute ens37
+    inet 192.168.127.10/24 brd 192.168.127.255 scope global noprefixroute enp0s8
         valid_lft forever preferred_lft forever
     inet6 fe80::20c:29ff:fe69:fae9/64 scope link
         valid_lft forever preferred_lft forever
@@ -79,4 +79,4 @@ Soit :
 Pour ***prouver*** que j'ai bien un liaison entre mon pc et la *VM*.
 Je fais un **ping** depuis mon pc vers la *VM* avec la commande `ping 192.168.127.10`
 
-*Bien sur avant de faire cette commande, j'ai changer la configuration de la carte réseau de l'hote par* `192.168.127.42` *avec un masque de sous réseau* `255.255.255.0`
+*Bien sur avant de faire cette commande, j'ai changer la configuration de la carte réseau de l'hote par* `192.168.127.5` *avec un masque de sous réseau* `255.255.255.0`
