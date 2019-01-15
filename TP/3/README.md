@@ -7,7 +7,10 @@
 * [Matériel utilisé](#matériel-utilisé)
 * [Initiation](#initiation)
     * [Avant de commancer](#avant-de-commancer)
-    * [Configuration réseau d'une machine CentOS](#configuration-réseau-dune-machine-centos)
+        * [Configuration réseau d'une machine CentOS](#configuration-réseau-dune-machine-centos)
+        * [Utilisez une commande pour prouver que vous avez internet depuis la VM](#utilisez-une-commande-pour-prouver-que-vous-avez-internet-depuis-la-vm)
+        * [Prouvez que votre PC hôte et la VM peuvent communiquer](#prouvez-que-votre-pc-hôte-et-la-vm-peuvent-communiquer)
+        * [Affichez votre table de routage sur la VM et expliquez chacune des lignes](#affichez-votre-table-de-routage-sur-la-vm-et-expliquez-chacune-des-lignes)
 
 # Matériel utilisé
 
