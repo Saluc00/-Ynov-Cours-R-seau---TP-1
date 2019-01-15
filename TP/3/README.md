@@ -9,7 +9,7 @@
 
 # Matériel utilisé
 
-Pour se *TP* j'utilise une **machine virtuelle** 
+Pour se *TP* j'utilise une **machine virtuelle**.
 
 **Logiciel** : `VirtualBox`
 **OS** : `centOS 7 (minimal)`
@@ -49,7 +49,7 @@ La dedans, j'ouvre **VIM** en faisant la commande `vi ifcfg-ens37`, puis inscrir
     NETMASK=255.255.255.0
     [it4@localhost network-scripts]$
 
-Petit `ifdown ens37` et `ifup ens37` pour redemarrer la carte réseau *(Pour etre sur que la config sois correctement mise)*
+Petit `ifdown ens37` et `ifup ens37` pour redemarrer la carte réseau *(Pour etre sur que la config sois correctement mise)*.
 
 Avec `ip a` je peut voir la config de toutes les carte réseau.
 
@@ -76,20 +76,32 @@ Soit :
     inet6 fe80::20c:29ff:fe69:fae9/64 scope link
         valid_lft forever preferred_lft forever
 
+## Configuration réseau d'une machine CentOS
+
+A faire..
+
+### Utilisez une commande pour prouver que vous avez internet depuis la VM
+
+Afin de prouver que j'ai accès à *internet*, je fais la commande `curl www.google.com`.
+
+*Pour le coup, j'affiche pas le resultat.. un peu long à recopier. :/*
+*Mais j'ai eu un gros bloc d'html !*
+
+### Prouvez que votre PC hôte et la VM peuvent communiquer
 
 Pour ***prouver*** que j'ai bien un liaison entre mon pc et la *VM*.
 Je fais un **ping** depuis mon pc vers la *VM* avec la commande `ping 192.168.126.10`.
 
     ping 192.168.126.10
 
-    Envoi d’une requête 'Ping'  192.168.126.10 avec 32 octets de données :
-    Réponse de 192.168.126.10 : octets=32 temps<1ms TTL=64
-    Réponse de 192.168.126.10 : octets=32 temps<1ms TTL=64
-    Réponse de 192.168.126.10 : octets=32 temps<1ms TTL=64
-    Réponse de 192.168.126.10 : octets=32 temps<1ms TTL=64
+    Envoi d’une requête 'Ping'  192.168.126.10 avec 32 octets de données :
+    Réponse de 192.168.126.10 : octets=32 temps<1ms TTL=64
+    Réponse de 192.168.126.10 : octets=32 temps<1ms TTL=64
+    Réponse de 192.168.126.10 : octets=32 temps<1ms TTL=64
+    Réponse de 192.168.126.10 : octets=32 temps<1ms TTL=64
 
     Statistiques Ping pour 192.168.126.10:
-        Paquets : envoyés = 4, reçus = 4, perdus = 0 (perte 0%),
+        Paquets : envoyés = 4, reçus = 4, perdus = 0 (perte 0%),
     Durée approximative des boucles en millisecondes :
         Minimum = 0ms, Maximum = 0ms, Moyenne = 0ms
 
@@ -107,5 +119,20 @@ Puis je **ping** l'hote depuis la *VM* en faisant `ping 192.168.126.1` sur la *m
     6 packets transmitted, 6 received, 0% packet loss, time 5005ms
     rtt min/avg/max/mdev = 0.212/0.250/0.277/0.023 ms
 
-*Bien sur avant de faire cette commande, la configuration de la carte réseau host-only est* `192.168.126.1` *avec un masque de sous réseau* `255.255.255.0`
+*Bien sur avant de faire cette commande, la configuration de la carte réseau host-only est* `192.168.126.1` *avec un masque de sous réseau* `255.255.255.0`.
 
+### Affichez votre table de routage sur la VM et expliquez chacune des lignes
+
+Maintenant pour afficher la table de routage, je fais la commande `ip route`.
+
+    default via 10..0.2.2 dev enp0s3 proto dhcp metric 101
+    10.0.2.0/24 dev enp0s3 proto kernel scope link src 10.0.2.15 metric 101
+    192.168.126.0/24 dev enp0s8 proto kernel scope link src 192.168.126.10 metric 100
+
+## Faire joujou avec quelques commandes
+
+A faire..
+
+### Ping
+
+*On peut voir les ping depuis le PC vers la VM et depuis la VM vers le PC [ici](prouvez-que-votre PC hôte-et-la-VM peuvent-communique) !*
