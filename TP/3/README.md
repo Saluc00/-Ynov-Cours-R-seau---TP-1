@@ -6,6 +6,8 @@
 
 * [Matériel utilisé](#matériel-utilisé)
 * [Initiation](#initiation)
+    * [Avant de commancer](#avant-de-commancer)
+    * [Configuration réseau d'une machine CentOS](#configuration-réseau-dune-machine-centos)
 
 # Matériel utilisé
 
@@ -76,18 +78,18 @@ Soit :
     inet6 fe80::20c:29ff:fe69:fae9/64 scope link
         valid_lft forever preferred_lft forever
 
-## Configuration réseau d'une machine CentOS
+### Configuration réseau d'une machine CentOS
 
 A faire..
 
-### Utilisez une commande pour prouver que vous avez internet depuis la VM
+#### Utilisez une commande pour prouver que vous avez internet depuis la VM
 
 Afin de prouver que j'ai accès à *internet*, je fais la commande `curl www.google.com`.
 
 *Pour le coup, j'affiche pas le resultat.. un peu long à recopier. :/*
 *Mais j'ai eu un gros bloc d'html !*
 
-### Prouvez que votre PC hôte et la VM peuvent communiquer
+#### Prouvez que votre PC hôte et la VM peuvent communiquer
 
 Pour ***prouver*** que j'ai bien un liaison entre mon pc et la *VM*.
 Je fais un **ping** depuis mon pc vers la *VM* avec la commande `ping 192.168.126.10`.
@@ -121,7 +123,7 @@ Puis je **ping** l'hote depuis la *VM* en faisant `ping 192.168.126.1` sur la *m
 
 *Bien sur avant de faire cette commande, la configuration de la carte réseau host-only est* `192.168.126.1` *avec un masque de sous réseau* `255.255.255.0`.
 
-### Affichez votre table de routage sur la VM et expliquez chacune des lignes
+#### Affichez votre table de routage sur la VM et expliquez chacune des lignes
 
 Maintenant pour afficher la table de routage, je fais la commande `ip route`.
 
@@ -129,15 +131,15 @@ Maintenant pour afficher la table de routage, je fais la commande `ip route`.
     10.0.2.0/24 dev enp0s3 proto kernel scope link src 10.0.2.15 metric 101
     192.168.126.0/24 dev enp0s8 proto kernel scope link src 192.168.126.10 metric 100
 
-## Faire joujou avec quelques commandes
+### Faire joujou avec quelques commandes
 
 A faire..
 
-### Ping
+#### Ping
 
 *On peut voir les ping depuis le PC vers la VM et depuis la VM vers le PC au dessus à* ***Prouvez que votre PC hôte et la VM peuvent communiquer***
 
-### Afficher la table de routage 
+#### Afficher la table de routage 
 
 *La table de routage de la VM est à* ***affichez votre table de routage sur la VM et expliquez chacune des lignes***
 
@@ -158,7 +160,7 @@ La table de routage de l'hôte est :
 
     IPv4 Table de routage
     ===========================================================================
-    Itinéraires actifs :
+    Itinéraires actifs :
     Destination réseau    Masque réseau  Adr. passerelle   Adr. interface Métrique
             0.0.0.0          0.0.0.0      10.33.3.253      10.33.2.249     35
             10.33.0.0    255.255.252.0         On-link       10.33.2.249    291
@@ -192,14 +194,14 @@ La table de routage de l'hôte est :
     255.255.255.255  255.255.255.255         On-link    169.254.53.133    281
     255.255.255.255  255.255.255.255         On-link     192.168.234.1    291
     ===========================================================================
-    Itinéraires persistants :
+    Itinéraires persistants :
     Adresse réseau    Masque réseau  Adresse passerelle Métrique
             0.0.0.0          0.0.0.0    192.168.127.1  Par défaut
     ===========================================================================
 
     IPv6 Table de routage
     ===========================================================================
-    Itinéraires actifs :
+    Itinéraires actifs :
     If Metric Network Destination      Gateway
     1    331 ::1/128                  On-link
     26    281 fe80::/64                On-link
@@ -224,7 +226,7 @@ La table de routage de l'hôte est :
     24    281 ff00::/8                 On-link
     19    291 ff00::/8                 On-link
     ===========================================================================
-    Itinéraires persistants :
+    Itinéraires persistants :
     Aucun
 
 #### Mettre en évidence la ligne qui leur permet de discuter via le réseau host-only (dans chacune des tables)
@@ -239,11 +241,11 @@ La table de routage de l'hôte est :
 
     192.168.126.0/24 dev enp0s8 proto kernel scope link src 192.168.126.10 metric 100
 
-### Depuis la VM utilisez curl (ou wget) pour télécharger un fichier sur internet
+#### Depuis la VM utilisez curl (ou wget) pour télécharger un fichier sur internet
 
 *On peut voir cela ici :* ***utilisez une commande pour prouver que vous avez internet depuis la VM***.
 
-### depuis la VM utilisez dig pour connaître l'IP de : 
+#### depuis la VM utilisez dig pour connaître l'IP de : 
 
 Avant tout, il me faut télécharger bind-utils pour utiliser la commande `dig` en faisant `yum install bind-utils`.
 
@@ -334,3 +336,5 @@ Serveur initialisé !
 Faire `telnet 192.168.126.10 5454`.
 
 Cha marche !
+
+## Routage statique
