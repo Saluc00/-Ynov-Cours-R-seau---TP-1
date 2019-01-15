@@ -45,7 +45,7 @@ La dedans, j'ouvre **VIM** en faisant la commande `vi ifcfg-ens37`, puis inscrir
     NAME=ens37
     DEVICE=ens37
     
-    IDADDR=192.168.127.10
+    IDADDR=192.168.126.10
     NETMASK=255.255.255.0
     [it4@localhost network-scripts]$
 
@@ -71,12 +71,41 @@ Soit :
 
     3: ens37: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc pfifo_fast state UP group default qlen 1000
     link/ether 00:0c:29:69:fa:e9 brd ff:ff:ff:ff:ff:ff
-    inet 192.168.127.10/24 brd 192.168.127.255 scope global noprefixroute enp0s8
+    inet 192.168.126.10/24 brd 192.168.126.255 scope global noprefixroute enp0s8
         valid_lft forever preferred_lft forever
     inet6 fe80::20c:29ff:fe69:fae9/64 scope link
         valid_lft forever preferred_lft forever
 
-Pour ***prouver*** que j'ai bien un liaison entre mon pc et la *VM*.
-Je fais un **ping** depuis mon pc vers la *VM* avec la commande `ping 192.168.127.10`
 
-*Bien sur avant de faire cette commande, j'ai changer la configuration de la carte réseau de l'hote par* `192.168.127.5` *avec un masque de sous réseau* `255.255.255.0`
+Pour ***prouver*** que j'ai bien un liaison entre mon pc et la *VM*.
+Je fais un **ping** depuis mon pc vers la *VM* avec la commande `ping 192.168.126.10`.
+
+    ping 192.168.126.10
+
+    Envoi d’une requête 'Ping'  192.168.126.10 avec 32 octets de données :
+    Réponse de 192.168.126.10 : octets=32 temps<1ms TTL=64
+    Réponse de 192.168.126.10 : octets=32 temps<1ms TTL=64
+    Réponse de 192.168.126.10 : octets=32 temps<1ms TTL=64
+    Réponse de 192.168.126.10 : octets=32 temps<1ms TTL=64
+
+    Statistiques Ping pour 192.168.126.10:
+        Paquets : envoyés = 4, reçus = 4, perdus = 0 (perte 0%),
+    Durée approximative des boucles en millisecondes :
+        Minimum = 0ms, Maximum = 0ms, Moyenne = 0ms
+
+Puis je **ping** l'hote depuis la *VM* en faisant `ping 192.168.126.1` sur la *machine virtuel*.
+
+    ping 192.168.126.1 
+
+    PING 192.168.126.1 (192.168.126.1) 56(84) bytes of data.
+    64 bytes from 192.168.126.1: icmp_seq=1 ttl=128 time=0.277 ms
+    64 bytes from 192.168.126.1: icmp_seq=2 ttl=128 time=0.248 ms
+    64 bytes from 192.168.126.1: icmp_seq=3 ttl=128 time=0.212 ms
+    64 bytes from 192.168.126.1: icmp_seq=4 ttl=128 time=0.251 ms
+
+    --- 192.168.126.1 ping statistics ---
+    6 packets transmitted, 6 received, 0% packet loss, time 5005ms
+    rtt min/avg/max/mdev = 0.212/0.250/0.277/0.023 ms
+
+*Bien sur avant de faire cette commande, la configuration de la carte réseau host-only est* `192.168.126.1` *avec un masque de sous réseau* `255.255.255.0`
+
