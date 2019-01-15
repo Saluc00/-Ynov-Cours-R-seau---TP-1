@@ -135,4 +135,4 @@ A faire..
 
 ### Ping
 
-*On peut voir les ping depuis le PC vers la VM et depuis la VM vers le PC [ici](###prouvez-que-votre PC hôte-et-la-VM peuvent-communique) !*
+*On peut voir les ping depuis le PC vers la VM et depuis la VM vers le PC au dessus à* ***Prouvez que votre PC hôte et la VM peuvent communiquer***
