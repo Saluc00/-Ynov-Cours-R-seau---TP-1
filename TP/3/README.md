@@ -303,4 +303,34 @@ Une fois ouvert, j'inscris l'ip de la *VM* (soit : `192.168.126.10`) puis je me 
 * Maintenant, j'ouvrir `Putty.exe`.
     * Je coche **SSH**.
     * Change le port `22` (port ssh par defaut) par `2222`.
-    * Go !  
+    * Go ! 
+
+Marche pô..
+
+Ok.. **Qu'est ce que pourquoi ça ne pas marcher ?**
+
+J'ai changé le port ? Mais je ne l'ai pas *autorisé* dans le **firewall**.
+
+Pour changer le port : `firewall-cmd --add-port=2222/tcp --permanent` puis `firewall-cmd --reload`pour redemarrer le service.
+
+#### Netcat
+
+Il nous faut un `serveur` et un `client`
+
+La *VM* sera le `serveur`.
+Putty sera alors le `client`.
+
+*Putty étant connecté au `ssh` de la VM*.
+
+* Sur la VM:
+
+Installer **netcat** avec : `yum install nc`
+puis `nc -l -p 5454`.
+
+Serveur initialisé !
+
+* Sur putty:
+
+Faire `telnet 192.168.126.10 5454`.
+
+Cha marche !
