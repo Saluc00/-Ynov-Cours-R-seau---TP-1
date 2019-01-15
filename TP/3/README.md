@@ -18,12 +18,15 @@ Pour se *TP* j'utilise une **machine virtuelle**.
 
 **Logiciel** : `VirtualBox`
 **OS** : `centOS 7 (minimal)`
-
+**PC** : 
+    * `Mon PC personel`
+    * `Ce magnifique pc dit *PORTABLE*`
 # Initiation
 
 Dans notre TP, j'utilise **une machine virtuelle** (*VM*) avec un *OS* [centOS](https://fr.wikipedia.org/wiki/CentOS).
 
 ### Avant de commencer
+---
 
 La *VM* configuré, il nous ai demandé de *désactiver* `SElinux`.
 
@@ -82,10 +85,12 @@ Soit :
         valid_lft forever preferred_lft forever
 
 ### Configuration réseau d'une machine CentOS
+---
 
 A faire..
 
 #### Utilisez une commande pour prouver que vous avez internet depuis la VM
+---
 
 Afin de prouver que j'ai accès à *internet*, je fais la commande `curl www.google.com`.
 
@@ -93,6 +98,7 @@ Afin de prouver que j'ai accès à *internet*, je fais la commande `curl www.goo
 *Mais j'ai eu un gros bloc d'html !*
 
 #### Prouvez que votre PC hôte et la VM peuvent communiquer
+---
 
 Pour ***prouver*** que j'ai bien un liaison entre mon pc et la *VM*.
 Je fais un **ping** depuis mon pc vers la *VM* avec la commande `ping 192.168.126.10`.
@@ -135,14 +141,17 @@ Maintenant pour afficher la table de routage, je fais la commande `ip route`.
     192.168.126.0/24 dev enp0s8 proto kernel scope link src 192.168.126.10 metric 100
 
 ### Faire joujou avec quelques commandes
+---
 
 A faire..
 
 #### Ping
+---
 
 *On peut voir les ping depuis le PC vers la VM et depuis la VM vers le PC au dessus à* ***Prouvez que votre PC hôte et la VM peuvent communiquer***
 
 #### Afficher la table de routage 
+---
 
 *La table de routage de la VM est à* ***affichez votre table de routage sur la VM et expliquez chacune des lignes***
 
@@ -233,6 +242,7 @@ La table de routage de l'hôte est :
     Aucun
 
 #### Mettre en évidence la ligne qui leur permet de discuter via le réseau host-only (dans chacune des tables)
+---
 
 * hôte
 
@@ -245,10 +255,11 @@ La table de routage de l'hôte est :
     192.168.126.0/24 dev enp0s8 proto kernel scope link src 192.168.126.10 metric 100
 
 #### Depuis la VM utilisez curl (ou wget) pour télécharger un fichier sur internet
-
+---
 *On peut voir cela ici :* ***utilisez une commande pour prouver que vous avez internet depuis la VM***.
 
-#### depuis la VM utilisez dig pour connaître l'IP de : 
+#### depuis la VM utilisez dig pour connaître l'IP 
+---
 
 Avant tout, il me faut télécharger bind-utils pour utiliser la commande `dig` en faisant `yum install bind-utils`.
 
@@ -267,6 +278,7 @@ je peut voir que *l'ip* du serveur de Google est `216.58.204.238`.
 ## Notion de ports et SSH
 
 ### Exploration des ports locaux
+---
 
 En faisant `ss -al4tnp`.
 
@@ -286,6 +298,7 @@ Soit :
 * p : pour connaître l'application qui écoute sur ce port.
 
 ### SSH
+---
 
 *SSH est un protocole pour se connecter sur un serveur à distance.*
 
@@ -297,8 +310,10 @@ Une fois ouvert, j'inscris l'ip de la *VM* (soit : `192.168.126.10`) puis je me 
 **C'est bon !!!!** Je suis connecté !
 
 ### Firewall
+---
 
 #### SSH 
+---
 
 * J'ai modifier le fichier /etc/ssh/sshd_config.
     * Changer le numéro du port sur lequel votre serveur SSH écoute, *soit* `2222`.
@@ -319,6 +334,7 @@ J'ai changé le port ? Mais je ne l'ai pas *autorisé* dans le **firewall**.
 Pour changer le port : `firewall-cmd --add-port=2222/tcp --permanent` puis `firewall-cmd --reload`pour redemarrer le service.
 
 #### Netcat
+---
 
 Il nous faut un `serveur` et un `client`
 
@@ -341,3 +357,114 @@ Faire `telnet 192.168.126.10 5454`.
 Cha marche !
 
 ## Routage statique
+
+Objectif :
+
+    Internet            Internet
+        |                    |
+      WiFi                  WiFi
+        |                    |
+      PC 1  ---Ethernet--- PC 2
+        |                    |
+    Host-only 1          Host-only 2
+        |                    |
+      VM 1                 VM 2
+
+C'est à dire, interconnecter le PC (PC1) hôte avec un second PC (PC2).
+Sur le second PC (PC2), mettre un VM (VM2).
+
+### Préparation avec câble
+---
+
+Faire en sorte que :
+
+    * Les deux PCs puissent se ping à travers le câble.
+    * Les cartes Ethernets doivent être dans le réseau 12 : 192.168.112.0/30.
+
+### Préparation VirtualBox
+---
+
+Modifier les réseaux host-only pour qu'ils soient :
+
+* PC1 : réseau 1 : 192.168.101.0/24
+* PC2 : réseau 2 : 192.168.102.0/24
+
+Modifiez l'adresse des VM :
+
+* VM1 (sur PC1) : 192.168.101.10
+* VM2 (sur PC2) : 192.168.102.10
+
+### Activation du routage sur les PCs
+---
+
+Vue que les deux PCs hôtes sont des *windows*, je fais les manipulations suivantes sur le PC1 et 2 :
+
+* modifier la clé registre `HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\ Services\Tcpip\Parameters\IPEnableRouter` en passant sa valeur de `0` à `1`
+* vous pouvez reboot là (ça évite des pbs)
+* activer le service de routage ("lancer l'application de routage")
+    * `Win + R`
+    * `services.msc` > `Entrée`
+    * Naviguer à "Routage et accès distant"
+        * Clic-droit > Propriétés
+        * Pour le démarrage, sélectionner "Automatique"
+        * `Appliquer`
+        * `Démarrer`
+
+**bilan des adresses IP portés par chacune des interfaces utilisées dans le TP**
+
+J'ai 3 réseaux : 
+- **réseau `1`**, un /24 entre PC1 et VM1 (host-only 1)
+Qui contient : 
+    * PC1 : 192.168.101.1
+    * VM1 : 192.168.101.10
+- **réseau `2`**, un /24 entre PC2 et VM2 (host-only 2)
+Qui contient :
+    * PC2 : 192.168.102.1
+    * VM2 : 192.168.102.10
+- **réseau `12`**, un /30 entre PC1 et PC2 (câble)
+    * PC1 : 192.168.112.1
+    * PC2 : 192.168.112.2
+
+#### PC1
+---
+Pour faire le *routage* sur le PC1 entre le réseau du PC1 et la VM1 **et** au réseau du PC1 et PC2, je tape : `route add 192.168.102.0/24 mask 255.255.255.0 192.168.112.2`.
+
+Le PC1 ping maintenant le PC2 sur l'ip 192.168.102.1 !
+
+#### PC2 
+---
+Pour faire le *routage* sur le PC2 entre le réseau du PC2 et la VM2 **et** au réseau du PC1 et PC2, je tape : `route add 192.168.101.0/24 mask 255.255.255.0 192.168.112.1`.
+
+Le PC2 ping maintenant le PC1 sur l'ip 192.168.101.1 !
+
+### Activation du routage sur les VM
+---
+
+#### VM1
+---
+
+Pour que la *VM1* puisse ping les PCs sur le réseau `192.168.112.0`, je fais :
+
+    ip route add 192.168.112.0/24 via 192.168.101.1 dev enp0s8
+
+Puis pour que la *VM1* puisse ping les PCs sur le réseau `192.168.102.0`, je fais :
+
+    ip route add 192.168.102.0/24 via 192.168.101.1 dev enp0s8
+
+Les ping fonctionnent !
+
+#### VM2
+---
+
+Pour que la *VM1* puisse ping les PCs sur le réseau `192.168.112.0`, je fais :
+
+    ip route add 192.168.112.0/24 via 192.168.102.1 dev enp0s8
+
+Puis pour que la *VM1* puisse ping les PCs sur le réseau `192.168.102.0`, je fais :
+
+    ip route add 192.168.101.0/24 via 192.168.102.1 dev enp0s8
+
+Les ping fonctionnent !
+
+## Configuration des noms de domaine
+
