@@ -6,11 +6,32 @@
 
 * [Matériel utilisé](#matériel-utilisé)
 * [Initiation](#initiation)
-    * [Avant de commancer](#avant-de-commancer)
+    * [Avant de commencer](#avant-de-commencer)
         * [Configuration réseau d'une machine CentOS](#configuration-réseau-dune-machine-centos)
         * [Utilisez une commande pour prouver que vous avez internet depuis la VM](#utilisez-une-commande-pour-prouver-que-vous-avez-internet-depuis-la-vm)
         * [Prouvez que votre PC hôte et la VM peuvent communiquer](#prouvez-que-votre-pc-hôte-et-la-vm-peuvent-communiquer)
         * [Affichez votre table de routage sur la VM et expliquez chacune des lignes](#affichez-votre-table-de-routage-sur-la-vm-et-expliquez-chacune-des-lignes)
+        * [Faire joujou avec quelques commandes](#faire-joujou-avec-quelques-commandes)
+            * [Ping](#Ping)
+            * [Afficher la table de routage](#afficher-la-table-de-routage)
+* [Notion de ports et SSH](#notion-de-ports-et-ssh)
+    * [Exploration des ports locaux](#exploration-des-ports-locaux)
+    * [SSH](#ssh)
+    * [Firewall](#firewall)
+        * [SSH](#ssh)
+        * [Netcat](#netcat)
+* [Routage statique](#routage-statique)
+    * [Préparation des hôtes (vos PCs)](#Préparation-des-hôtes-(vos-pcs))
+        * [Préparation avec câble](#préparation-avec-câble)
+        * [Préparation VirtualBox](#préparation-virtualbox)
+        * [Activation du routage sur les PCs](#Activation-du-routage-sur-les-pcs)
+    * [Configuration du routage](#Configuration-du-routage)
+        * [PC1](#pc1)
+        * [PC2](#pc2)
+    * [Activation du routage sur les VM](#Activation-du-routage-sur-les-VM)
+        * [VM1](#vm1)
+        * [VM2](#vm2)
+* [Configuration des noms de domaines](#Configuration-des-noms-de-domaines)
 
 # Matériel utilisé
 
@@ -373,7 +394,9 @@ Objectif :
 C'est à dire, interconnecter le PC (PC1) hôte avec un second PC (PC2).
 Sur le second PC (PC2), mettre un VM (VM2).
 
-### Préparation avec câble
+## Préparation des hôtes (vos PCs)
+
+#### Préparation avec câble
 ---
 
 Faire en sorte que :
@@ -381,7 +404,7 @@ Faire en sorte que :
     * Les deux PCs puissent se ping à travers le câble.
     * Les cartes Ethernets doivent être dans le réseau 12 : 192.168.112.0/30.
 
-### Préparation VirtualBox
+#### Préparation VirtualBox
 ---
 
 Modifier les réseaux host-only pour qu'ils soient :
@@ -394,7 +417,7 @@ Modifiez l'adresse des VM :
 * VM1 (sur PC1) : 192.168.101.10
 * VM2 (sur PC2) : 192.168.102.10
 
-### Activation du routage sur les PCs
+#### Activation du routage sur les PCs
 ---
 
 Vue que les deux PCs hôtes sont des *windows*, je fais les manipulations suivantes sur le PC1 et 2 :
@@ -412,30 +435,32 @@ Vue que les deux PCs hôtes sont des *windows*, je fais les manipulations suivan
 
 **bilan des adresses IP portés par chacune des interfaces utilisées dans le TP**
 
+### Configuration du routage
+
 J'ai 3 réseaux : 
-- **réseau `1`**, un /24 entre PC1 et VM1 (host-only 1)
+- **réseau `1`**, un /24 entre *PC1* et *VM1* (host-only 1)
 Qui contient : 
-    * PC1 : 192.168.101.1
-    * VM1 : 192.168.101.10
-- **réseau `2`**, un /24 entre PC2 et VM2 (host-only 2)
+    * PC1 : `192.168.101.1`
+    * VM1 : `192.168.101.10`
+- **réseau `2`**, un /24 entre *PC2* et *VM2* (host-only 2)
 Qui contient :
-    * PC2 : 192.168.102.1
-    * VM2 : 192.168.102.10
-- **réseau `12`**, un /30 entre PC1 et PC2 (câble)
-    * PC1 : 192.168.112.1
-    * PC2 : 192.168.112.2
+    * PC2 : `192.168.102.1`
+    * VM2 : `192.168.102.10`
+- **réseau `12`**, un /30 entre *PC1* et *PC2* (câble)
+    * PC1 : `192.168.112.1`
+    * PC2 : `192.168.112.2`
 
 #### PC1
 ---
 Pour faire le *routage* sur le PC1 entre le réseau du PC1 et la VM1 **et** au réseau du PC1 et PC2, je tape : `route add 192.168.102.0/24 mask 255.255.255.0 192.168.112.2`.
 
-Le PC1 ping maintenant le PC2 sur l'ip 192.168.102.1 !
+Le PC1 ping maintenant le *PC2* sur l'ip `192.168.102.1` !
 
 #### PC2 
 ---
-Pour faire le *routage* sur le PC2 entre le réseau du PC2 et la VM2 **et** au réseau du PC1 et PC2, je tape : `route add 192.168.101.0/24 mask 255.255.255.0 192.168.112.1`.
+Pour faire le *routage* sur le *PC2* entre le réseau du PC2 et la VM2 **et** au réseau du PC1 et PC2, je tape : `route add 192.168.101.0/24 mask 255.255.255.0 192.168.112.1`.
 
-Le PC2 ping maintenant le PC1 sur l'ip 192.168.101.1 !
+Le PC2 ping maintenant le *PC1* sur l'ip `192.168.101.1` !
 
 ### Activation du routage sur les VM
 ---
@@ -466,5 +491,71 @@ Puis pour que la *VM1* puisse ping les PCs sur le réseau `192.168.102.0`, je fa
 
 Les ping fonctionnent !
 
-## Configuration des noms de domaine
+## Configuration des noms de domaines
 
+Apres avoir changé les noms de domaines..
+
+Ping de la *VM1* au *PC1* :
+
+    [root@localhost etc]# ping pc1.tp3.b1
+    PING pc1 (192.168.112.1) 56(84) bytes of data.
+    64 bytes from pc1 (192.168.112.1): icmp_seq=1 ttl=127 time=0.237 ms
+    64 bytes from pc1 (192.168.112.1): icmp_seq=2 ttl=127 time=0.477 ms
+    64 bytes from pc1 (192.168.112.1): icmp_seq=3 ttl=127 time=0.461 ms
+    64 bytes from pc1 (192.168.112.1): icmp_seq=4 ttl=127 time=0.504 ms
+
+
+Ping de la *VM* 1 au *PC2* :
+
+    [root@localhost etc]# ping pc2.tp3.b1
+    PING pc2 (192.168.112.2) 56(84) bytes of data.
+    64 bytes from pc2 (192.168.112.2): icmp_seq=1 ttl=127 time=2.66 ms
+    64 bytes from pc2 (192.168.112.2): icmp_seq=2 ttl=127 time=2.78 ms
+    64 bytes from pc2 (192.168.112.2): icmp_seq=3 ttl=127 time=2.69 ms
+    64 bytes from pc2 (192.168.112.2): icmp_seq=4 ttl=127 time=2.53 ms
+    64 bytes from pc2 (192.168.112.2): icmp_seq=5 ttl=127 time=3.27 ms
+
+
+Ping de la *VM1* à la *VM2* :
+
+    [root@localhost ~]# ping vm2.tp3.b1
+    PING vm2 (192.168.102.10) 56(84) bytes of data.
+    64 bytes from vm2 (192.168.102.10): icmp_seq=1 ttl=62 time=2.82 ms
+    ^[[A64 bytes from vm2 (192.168.102.10): icmp_seq=2 ttl=62 time=3.09 ms
+    64 bytes from vm2 (192.168.102.10): icmp_seq=3 ttl=62 time=3.83 ms
+    64 bytes from vm2 (192.168.102.10): icmp_seq=4 ttl=62 time=3.21 ms
+    64 bytes from vm2 (192.168.102.10): icmp_seq=5 ttl=62 time=3.54 ms
+
+
+Ping de la *VM2* au *PC1* :
+
+    [root@localhost ~]$ ping pc1.tp3.b1
+    PING pc1 (192.168.112.1) 56(84) bytes of data.
+    64 bytes from pc1 (192.168.112.1): icmp_seq=1 ttl=127 time=2.27 ms
+    64 bytes from pc1 (192.168.112.1): icmp_seq=2 ttl=127 time=2.62 ms
+    64 bytes from pc1 (192.168.112.1): icmp_seq=3 ttl=127 time=2.43 ms
+    64 bytes from pc1 (192.168.112.1): icmp_seq=4 ttl=127 time=2.29 ms
+
+
+Ping de la *VM2* au *PC2* :
+
+    [root@localhost ~]$ ping pc2.tp3.b1
+    PING pc2 (192.168.112.2) 56(84) bytes of data.
+    64 bytes from pc2 (192.168.112.2): icmp_seq=1 ttl=127 time=0.356 ms
+    64 bytes from pc2 (192.168.112.2): icmp_seq=2 ttl=127 time=0.662 ms
+    64 bytes from pc2 (192.168.112.2): icmp_seq=3 ttl=127 time=0.600 ms
+    64 bytes from pc2 (192.168.112.2): icmp_seq=4 ttl=127 time=0.625 ms
+
+
+Ping de la *VM2* à la *VM1* :
+
+    [root@localhost ~]$ ping vm1.tp3.b1
+    PING vm1 (192.168.101.10) 56(84) bytes of data.
+    64 bytes from vm1 (192.168.101.10): icmp_seq=1 ttl=62 time=2.50 ms
+    64 bytes from vm1 (192.168.101.10): icmp_seq=2 ttl=62 time=2.82 ms
+    64 bytes from vm1 (192.168.101.10): icmp_seq=3 ttl=62 time=2.26 ms
+    64 bytes from vm1 (192.168.101.10): icmp_seq=4 ttl=62 time=2.53 ms
+
+Tout est OK !!! :)
+
+*Par USEREAU Lucas*
