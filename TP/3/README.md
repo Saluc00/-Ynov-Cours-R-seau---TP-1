@@ -42,6 +42,8 @@ Pour se *TP* j'utilise une **machine virtuelle**.
 **PC** : 
     * `Mon PC personel`
     * `Ce magnifique pc dit *PORTABLE*`
+    ![BeauPC](https://github.com/Saluc00/TP-Reseau-B1/blob/master/TP/3/ressources/beauPC.jpg)
+
 # Initiation
 
 Dans notre TP, j'utilise **une machine virtuelle** (*VM*) avec un *OS* [centOS](https://fr.wikipedia.org/wiki/CentOS).
