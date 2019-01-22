@@ -6,6 +6,7 @@
 * [Préparation d'une VM "patron"](#préparation-dune-VM-"patron")
     * [Création des réseaux](#création-des-réseaux)
     * [Mise en place du routage statique](#mise-en-place-du-routage-statique)
+* [Spéléologie réseau](#spéléologie-réseau)
 
 # Préparation d'une VM "patron"
 
@@ -79,11 +80,11 @@ client  <--net1--> router <--net2--> server
 
 **Tableau récapitulatif des IP :**
 
-Machine | `net1` | `net2`
---- | --- | ---
-`client1.tp4` | `10.1.0.10` | X
-`router1.tp4` | `10.1.0.254` | `10.2.0.254`
-`server1.tp4` | X | `10.2.0.10` 
+Machine | `net1` | `net2` | @ MAC
+--- | --- | --- | --- 
+`client1.tp4` | `10.1.0.10` | X | `08:00:27:03:da:f7`
+`router1.tp4` | `10.1.0.254` | `10.2.0.254` | `08:00:27:9b:02:7f` *et* `08:00:27:72:37:c4`
+`server1.tp4` | X | `10.2.0.10` | `08:00:27:9f:0c:3a`
 
 ## Mise en place du routage statique
 
@@ -94,7 +95,7 @@ Machine | `net1` | `net2`
 On va faire en sorte que notre `client1` puisse joindre `server1`, et vice-versa. 
 
 Pour ce faire : 
-1. **sur `router1`** : 
+* **sur `router1`** : 
     * activer l'IPv4 Forwarding (= transformer la machine en routeur)
       * `sudo sysctl -w net.ipv4.conf.all.forwarding=1`
     * désactiver le firewall (pour éviter certaines actions non voulues)
@@ -103,15 +104,27 @@ Pour ce faire :
     * vérifier qu'il a déjà des routes pour aller vers `net1` et `net2`
       * `ip route show`
 
-2. **sur `client1`** :
-    * faire en sorte que la machine ait une route vers `net1` et `net2`
-    * laisser le firewall activé
+* **sur `client1`** :
+    * Mettre le client sur le réseau `10.1.0.0`
 
-3. **sur `server1`** :
-    * faire en sorte que la machine ait une route vers `net1` et `net2`
-    * laisser le firewall activé
+* **sur `server1`** :
+    * Mettre le client sur le réseau `10.1.0.0`
 
-4. **test**
-    * `client1` ping `server1` !
-    * `server1` ping `client1` !
-    * effectuer un `traceroute` depuis le client pour voir le chemin pris par votre message
+* **test**
+    * `client1` ping `server1` OK !
+    * `server1` ping `client1` OK !
+    * effectuer un `traceroute` depuis le client pour voir le chemin pris par votre message --> `ip route`
+
+Le client ne vois uniquement le réseau 10.1.0.0 !
+
+# Spéléologie réseau
+
+## ARP
+
+* Sur le `client` : 
+    * La table ARP affiche :`10.1.0.254 dev enp0s8 lladdr 08:00:27:9b:02:7f STABLE`.
+    * **EXPLICATION !** Cela nous explique que je vois l'ip `10.1.0.254` *(Le routeur)* avec la carte enp0s8 qui à pour adresse *MAC* `08:00:27:9b:02:7f`.
+
+* Sur le `serveur`:
+    * * La table ARP affiche :`10.2.0.254 dev enp0s8 lladdr 08:00:27:9f:0c:3a STABLE`.
+    * **EXPLICATION !** Cela nous explique que je vois l'ip `10.2.0.254` *(Le routeur)* avec la carte enp0s8 qui à pour adresse *MAC* `08:00:27:9b:02:7f`
