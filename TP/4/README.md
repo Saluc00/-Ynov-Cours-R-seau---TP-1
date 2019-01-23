@@ -7,6 +7,11 @@
     * [Création des réseaux](#création-des-réseaux)
     * [Mise en place du routage statique](#mise-en-place-du-routage-statique)
 * [Spéléologie réseau](#spéléologie-réseau)
+    * [ARP](#arp)
+        * [Manip 1](#manip-1)
+        * [Manip 2](#manip-2)
+        * [Manip 3](#manip-3)
+        * [Manip 4](#manip-4)
 
 # Préparation d'une VM "patron"
 
@@ -113,18 +118,82 @@ Pour ce faire :
 * **test**
     * `client1` ping `server1` OK !
     * `server1` ping `client1` OK !
-    * effectuer un `traceroute` depuis le client pour voir le chemin pris par votre message --> `ip route`
 
-Le client ne vois uniquement le réseau 10.1.0.0 !
+Voici le resultat d'un **traceroute** sur le client :
+
+    traceroute to 10.2.0.10 (10.2.0.10), 30 hops max, 60 byte packets
+    1  gateway (10.1.0.254)  0.257 ms  0.165 ms  0.263 ms
+    2  10.2.0.10 (10.2.0.10)  0.471 ms !X  0.441 ms !X  0.423 ms !X
+
+On se rend alors compte que le client passe par sa **gateway** pour accéder au réseau `10.2.0.0`.  
 
 # Spéléologie réseau
 
 ## ARP
 
+Vider la table **ARP** sur toutes les machines Pour chaque manip !
+
+    sudo ip neigh flush all
+
+### Manip 1
+
 * Sur le `client` : 
-    * La table ARP affiche :`10.1.0.254 dev enp0s8 lladdr 08:00:27:9b:02:7f STABLE`.
-    * **EXPLICATION !** Cela nous explique que je vois l'ip `10.1.0.254` *(Le routeur)* avec la carte enp0s8 qui à pour adresse *MAC* `08:00:27:9b:02:7f`.
+    * J'affiche la table **ARP** ! Mais rien n'apparait..
+    * **EXPLICATION !** Je viens de vider la table, si je l'affiche il n'y a plus rien dedans.
 
 * Sur le `serveur`:
-    * * La table ARP affiche :`10.2.0.254 dev enp0s8 lladdr 08:00:27:9f:0c:3a STABLE`.
-    * **EXPLICATION !** Cela nous explique que je vois l'ip `10.2.0.254` *(Le routeur)* avec la carte enp0s8 qui à pour adresse *MAC* `08:00:27:9b:02:7f`
+    * J'affiche la table **ARP** ! Mais rien n'apparait..
+    * **EXPLICATION !** Je viens de vider la table, si je l'affiche il n'y a plus rien dedans.
+
+* Sur le `client` : 
+    * Je ping `serveur`.
+    * La table ARP affiche alors : 
+    ```
+    10.1.0.254 dev enp0s8 lladdr 08:00:27:9b:02:7f DELAY
+    ```
+    * **EXPLICATION !** Je vois maintenant l'ip que j'ai *route* pour accéder au réseau `10.2.0.0`.
+
+* Sur le `serveur` : 
+    * Je ping `client`.
+    * La table ARP affiche alors : 
+    ```
+    10.2.0.254 dev enp0s8 lladdr 08:00:27:27:72:c4 DELAY
+    ```
+    * **EXPLICATION !** Je vois maintenant l'ip que j'ai *route* pour accéder au réseau `10.1.0.0`.
+
+### Manip 2
+
+* Sur le `router` : 
+    * J'affiche la table **ARP** ! Mais rien n'apparait..
+    * **EXPLICATION !** Je viens de vider la table, si je l'affiche il n'y a plus rien dedans.
+
+* Sur le `client`:
+    * Je ping le `serveur`.
+
+* Sur le `routeur`:
+    * Table **ARP** :
+    ```
+    10.1.0.10 dev enp0s8 lladdr 08:00:27:03:da:7f DELAY
+    10.2.0.10 dev enp0s8 lladdr 0a:00:27:9f:c0:3a REACHABLE
+    ```
+
+### MANIP 3
+
+* Sur l'`hôte`:
+    * Afficher table **ARP** : `arp -a`. (Je la montre pas.. troooop longue !)
+    * Supprimer table **ARP** : `arp -d`.
+    * Afficher de nouveau la table..
+    * J'attend........
+    * Afficher encore la table !
+
+Les changement sont que la table c'est agrandit en attendant.
+Du fait que, en attendant, des utilisateurs m'ont *certainement* envoyé des paquets..
+Apres cela, je les vois dans la table **ARP**.
+
+### MANIP 4
+* Sur le `client`:
+    * afficher la table ARP
+    * activer la carte NAT : `ifup enp0s3` 
+    * joindre internet curl `google.com`
+    * afficher la table ARP
+
