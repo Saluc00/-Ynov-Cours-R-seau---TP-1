@@ -12,6 +12,8 @@
         * [Manip 2](#manip-2)
         * [Manip 3](#manip-3)
         * [Manip 4](#manip-4)
+    * [Wireshark](#wireshark)
+* [Interception d'ARP et ping](#Interception-dARP-et-ping)
 
 # Préparation d'une VM "patron"
 
@@ -196,4 +198,104 @@ Apres cela, je les vois dans la table **ARP**.
     * activer la carte NAT : `ifup enp0s3` 
     * joindre internet curl `google.com`
     * afficher la table ARP
+    ```
+    10.0.2.2 dev enp0s3 lladdr 52:54:00:12:35:02 REACHABLE
+    ```
+Cette *IP* est l'ip de la passerelle du réseau sur laquelle est la carte *NAT*.
+
+## Wireshark
+
+Go installer **tcpdump** !
+
+    yum install tcpdump
+
+*Surtout, ne pas oublier d'avoir la carte NAT (du router1) d'allumé !*
+
+je me connecte au ***SSH*** de mon router à l'adresse `10.1.0.254`.
+
+Sur **Powershell** faire :
+
+    ssh root@10.1.0.254
+
+*mettre le mdp du router1*
+
+#### Maintenant..
+
+Vu que je suis connecté en SSH, j'envoye des trames en permanence sur l'IP `10.1.0.254`.
+Je vais donc capturer le trafic de l'interface à laquelle je ne suis **PAAAAS** connecté pour éviter le bruit généré par **SSH**.
+
+# Interception d'ARP et ping
+
+
+
+- sur router1:
+
+    Lancer Wireshark pour enregistrer le trafic qui passer par l'interface choisie et enregistrer le trafic dans un fichier ping.pcap :
+
+        sudo tcpdump -i enp0s9 -w ping.pcap
+
+Ok ! le router *écoute* les trames !
+
+- sur client1: 
+
+    * vider la table ARP
+    * envoyer 4 pings à `10.2.0.10`.
+
+        ping -c 4 10.2.0.10`
+
+- sur router1: 
+
+    * quitter la capture (CTRL + C)
+    * vérifier la présenc edu fichier ping.pcap avec un ls
+    * envoyer le fichier ping.pcap sur votre hôte 
+
+*Pour récuperer le fichier `ping.pcap`*
+
+**Para recuperar el archivo:**
+
+*(Pour récuperer le fichier)*
+* A l'aide de `fileZilla`.
+    * Inserer :
+        * Ip de déstination.
+        * identifient.
+        * Mot de passe.
+        * GOGOGOGO
+
+Puis télécharger le fichier !!! (ping.pcap)
+
+- sur l'hôte (votre PC) :
+
+    * ouvrir le fichier ping.pcap dans Wireshark
+    * J'y vois :
+        * La question pour connaître la MAC de la destination.
+            ```
+            Who has 10.1.0.254? Tell 10.2.0.10
+            ```
+        * La réponse :
+            ```
+            10.1.0.254 is at 08:00:27:72:37:c4
+            ```
+        * Puis les **ping** !
+        * Puis les **pong** !
+
+# Interception d'une communication `netcat`
+
+**Intercepter le trafic**
+
+* Depuis router1
+    * Pendant que client1 se connecte au serveur netcat de server1
+        * Pour se connecter :
+            * Server1 : `nc -l 9999` (Pour le port 9999) !
+            * Client1 : `nc 10.2.0.10 9999` !
+    
+Recuperer le fichier avec FileZilla
+
+* le client envoie SYN : demande de synchronisation
+    *  Soit : `[SYN] Seq=0 Win=29200 Len=0 MSS=1460 SACK_PERM=1 TSval=8671283 TSecr=0 WS=128`
+* le serveur répond SYN,ACK : il accepte la synchronisation
+    * Soit : `[SYN, ACK] Seq=0 Ack=1 Win=28960 Len=0 MSS=1460 SACK_PERM=1 TSval=8671823 TSecr=8671283 WS=128`
+* le client répond ACK : Envoie de la confirmation de la connection
+    * `[ACK] Seq=1 Ack=1 Win=29312 Len=0 TSval=8671285 TSecr=8671823`
+
+**Remettre le firewall !**
 
