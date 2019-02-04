@@ -300,5 +300,14 @@ Recuperer le fichier avec FileZilla
 
 **Remettre le firewall !**
 
+En mettant le **firewall**, le serveur bloque les connection rentrante.
+Se qui fait qu'il est injoignable.
 
+Recuperer le fichier avec FileZilla.
 
+* le client envoie SYN : demande de synchronisation
+    *  Soit : `[SYN] Seq=0 Win=29200 Len=0 MSS=1460 SACK_PERM=1 TSval=8671283 TSecr=0 WS=128`
+* Il RETENTE car il n'arrive pas à se connecter 
+* Apres plusieurs essaie il ne trouve pas le desinataire. 
+
+*Par USEREAU Lucas*
